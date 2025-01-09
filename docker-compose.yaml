@@ -1,0 +1,62 @@
+networks:
+  default:
+    name: teste-l5
+    driver: bridge
+
+services:
+  backend:
+    image: deirofelippe/teste-tecnico-l5-networks:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: backend
+    command: sleep infinity
+    # env_file:
+    #   - ./.env
+    volumes:
+      - "./:/home/php/app"
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:3000/healthz"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    #   start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+
+  database:
+    image: mysql:8.0
+    container_name: database
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testel5
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.1.1
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOSTS: database
+    depends_on:
+      database:
+        condition: service_healthy
