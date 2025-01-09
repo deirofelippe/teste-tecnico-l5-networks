@@ -1,0 +1,32 @@
+{
+  "name": "Existing Docker Compose (Extend)",
+  "dockerComposeFile": ["../docker-compose.yaml", "docker-compose.yml"],
+  "service": "backend",
+  "workspaceFolder": "/home/php/app",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "php.executablePath": "/usr/local/bin/php",
+        "php-cs-fixer.executablePath": "php-cs-fixer",
+        "php-cs-fixer.onsave": true,
+        "php-cs-fixer.formatHtml": true,
+        "[php]": {
+          "editor.defaultFormatter": "junstyle.php-cs-fixer",
+          "editor.formatOnSave": true
+        }
+      },
+      "extensions": [
+        "hashicorp.terraform",
+        "donjayamanne.git-extension-pack",
+        "humao.rest-client",
+        "ms-azuretools.vscode-docker",
+        "hediet.vscode-drawio",
+        "tomoki1207.pdf",
+        "xdebug.php-pack",
+        "junstyle.php-cs-fixer"
+        // "onecentlin.laravel-extension-pack"
+      ]
+    }
+  },
+  "remoteUser": "php"
+}
