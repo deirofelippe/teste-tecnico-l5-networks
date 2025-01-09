@@ -1,0 +1,19 @@
+{
+    "name": "deirofelippe/teste-tecnico-l5-networks",
+    "autoload": {
+        "psr-4": {
+            "Deirofelippe\\TesteTecnicoL5Networks\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Felippe Deiró",
+            "email": "sergiofelippe.deiro@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.67",
+        "phpunit/phpunit": "^9.6",
+        "mockery/mockery": "^1.6"
+    }
+}
