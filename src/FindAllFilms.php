@@ -32,11 +32,24 @@ class FindAllFilms
             return [
                 "id" => $id,
                 "title" => $film["title"],
-                "release_date" => $film["release_date"],
+                "release_date" => DateTimeImmutable::createFromFormat("Y-m-d", $film["release_date"])->format("d/m/Y"),
             ];
         };
 
         $films = array_map($get_films_data, $films);
+
+        $sort = function ($film1, $film2) {
+            $film1_timestamp = DateTimeImmutable::createFromFormat("d/m/Y", $film1["release_date"])->getTimestamp();
+            $film2_timestamp = DateTimeImmutable::createFromFormat("d/m/Y", $film2["release_date"])->getTimestamp();
+
+            if ($film1 == $film2) {
+                return 0;
+            }
+            return ($film1_timestamp < $film2_timestamp) ? -1 : 1;
+        };
+
+        uasort($films, $sort);
+
 
         return $films;
     }
