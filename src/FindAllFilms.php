@@ -2,10 +2,15 @@
 
 class FindAllFilms
 {
+    private HttpClient $httpClient;
+    private Cache $cache;
+
     public function __construct(
-        private HttpClient $httpClient,
-        private Cache $cache
+        HttpClient $httpClient,
+        Cache $cache
     ) {
+        $this->httpClient = $httpClient;
+        $this->cache = $cache;
     }
 
     public function execute(): array
@@ -49,7 +54,6 @@ class FindAllFilms
         };
 
         uasort($films, $sort);
-
 
         return $films;
     }

@@ -1,11 +1,6 @@
 name: Pipeline CI-CD do Backend
 
-env:
-  WORKDIR: ./backend
-
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -15,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [21.7.3]
+        version: [7.4]
 
     services:
       mysql:
         image: mysql:8.0
         ports:
-          - 3306:3306
+          - 6603:3306
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: agenda_test
+          MYSQL_DATABASE: l5_test
         options: >-
           --health-cmd "mysqladmin ping"
           --health-interval 10s
@@ -34,102 +29,99 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
         with:
-          node-version: ${{ matrix.version }}
+          php-version: ${{ matrix.version }}
+          extensions: pdo
+          coverage: xdebug2
 
       - name: Install dependencies
-        working-directory: ${{ env.WORKDIR }}
+        run: composer update
+
+      - name: Run test coverage and check
         run: |
-          npm ci
+          XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-filter ./src --coverage-clover ./clover.xml ./tests/integration/
+          ./vendor/bin/coverage-check ./clover.xml 70 --only-percentage
 
-      - name: Run test coverage
-        working-directory: ${{ env.WORKDIR }}
-        run: npm run test:cov:ci
-        env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     - name: Check dependencies for vulnerabilities
+  #       working-directory: ${{ env.WORKDIR }}
+  #       run: npm audit --audit-level=high
 
-      - name: Check dependencies for vulnerabilities
-        working-directory: ${{ env.WORKDIR }}
-        run: npm audit --audit-level=high
+  #     - name: Run Cypress tests
+  #       uses: cypress-io/github-action@v2
+  #       with:
+  #         runTests: true
 
-      # - name: Run Cypress tests
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     runTests: true
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v1
 
-      # - name: Perform CodeQL Analysis
-      #   uses: github/codeql-action/analyze@v1
+  #     - name: Run SonarQube Scan
+  #       run: sonar-scanner
 
-      # - name: Run SonarQube Scan
-      #   run: sonar-scanner
+  # build:
+  #   needs: [ci]
+  #   runs-on: ubuntu-latest
 
-  build:
-    needs: [ci]
-    runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v6
+  #       with:
+  #         context: ${{ env.WORKDIR }}/
+  #         file: ${{ env.WORKDIR }}/Dockerfile
+  #         push: true
+  #         tags: deirofelippe/agenda-telefonica-backend:latest
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: ${{ env.WORKDIR }}/
-          file: ${{ env.WORKDIR }}/Dockerfile
-          push: true
-          tags: deirofelippe/agenda-telefonica-backend:latest
+  #     - name: Deploy to Kubernetes
+  #       uses: azure/k8s-deploy@v2
+  #       with:
+  #         namespace: production
+  #         manifests: ./k8s-manifest.yaml
 
-      # - name: Deploy to Kubernetes
-      #   uses: azure/k8s-deploy@v2
-      #   with:
-      #     namespace: production
-      #     manifests: ./k8s-manifest.yaml
+  # notify-success:
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+  #   if: ${{ success() }}
 
-  notify-success:
-    needs: [build]
-    runs-on: ubuntu-latest
-    if: ${{ success() }}
+  #   steps:
+  #     - name: Notify Telegram If Success
+  #       run: |
+  #         TELEGRAM_MESSAGE='[Agenda Telefônica] Pipeline foi finalizada'
 
-    steps:
-      - name: Notify Telegram If Success
-        run: |
-          TELEGRAM_MESSAGE='[Agenda Telefônica] Pipeline foi finalizada'
+  #         CURL_DATA=$(printf '{"chat_id":"%s","text":"%s"}' "${{ secrets.TELEGRAM_CHAT_ID }}" "$TELEGRAM_MESSAGE")
 
-          CURL_DATA=$(printf '{"chat_id":"%s","text":"%s"}' "${{ secrets.TELEGRAM_CHAT_ID }}" "$TELEGRAM_MESSAGE")
+  #         curl https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+  #           --request POST \
+  #           --header 'Content-Type: application/json' \
+  #           --data "$CURL_DATA"
 
-          curl https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-            --request POST \
-            --header 'Content-Type: application/json' \
-            --data "$CURL_DATA"
+  # notify-failure:
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+  #   if: ${{ failure() }}
 
-  notify-failure:
-    needs: [build]
-    runs-on: ubuntu-latest
-    if: ${{ failure() }}
+  #   steps:
+  #     - name: Notify Telegram If Failure
+  #       run: |
+  #         TELEGRAM_MESSAGE='[Agenda Telefônica] Falha na pipeline'
 
-    steps:
-      - name: Notify Telegram If Failure
-        run: |
-          TELEGRAM_MESSAGE='[Agenda Telefônica] Falha na pipeline'
+  #         CURL_DATA=$(printf '{"chat_id":"%s","text":"%s"}' "${{ secrets.TELEGRAM_CHAT_ID }}" "$TELEGRAM_MESSAGE")
 
-          CURL_DATA=$(printf '{"chat_id":"%s","text":"%s"}' "${{ secrets.TELEGRAM_CHAT_ID }}" "$TELEGRAM_MESSAGE")
-
-          curl https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-            --request POST \
-            --header 'Content-Type: application/json' \
-            --data "$CURL_DATA"
+  #         curl https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+  #           --request POST \
+  #           --header 'Content-Type: application/json' \
+  #           --data "$CURL_DATA"

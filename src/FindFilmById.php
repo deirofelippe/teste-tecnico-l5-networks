@@ -2,10 +2,15 @@
 
 class FindFilmById
 {
+    private HttpClient $httpClient;
+    private Cache $cache;
+
     public function __construct(
-        private HttpClient $httpClient,
-        private Cache $cache
+        HttpClient $httpClient,
+        Cache $cache
     ) {
+        $this->httpClient = $httpClient;
+        $this->cache = $cache;
     }
 
     public function execute(string $id): array
@@ -38,8 +43,7 @@ class FindFilmById
             "opening_crawl" => $film["opening_crawl"],
             "director" => $film["director"],
             "producer" => $film["producer"],
-            "release_date" => DateTimeImmutable::createFromFormat('Y-m-d', $film["release_date"])->format("d/m/Y")
-            ,
+            "release_date" => DateTimeImmutable::createFromFormat('Y-m-d', $film["release_date"])->format("d/m/Y"),
             "film_age" => "$years anos, $months meses e $days dias",
         ];
 
