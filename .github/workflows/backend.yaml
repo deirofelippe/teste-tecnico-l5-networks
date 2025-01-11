@@ -34,12 +34,15 @@ jobs:
         with:
           php-version: ${{ matrix.version }}
           extensions: pdo
+          coverage: xdebug2
 
       - name: Install dependencies
         run: composer update
 
-      - name: Run test coverage
-        run: ./vendor/bin/phpunit tests/integration/
+      - name: Run test coverage and check
+        run: |
+          XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-filter ./src --coverage-clover ./clover.xml ./tests/integration/
+          ./vendor/bin/coverage-check ./clover.xml 70 --only-percentage
 
   #     - name: Check dependencies for vulnerabilities
   #       working-directory: ${{ env.WORKDIR }}
