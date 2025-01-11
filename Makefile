@@ -1,0 +1,15 @@
+test:
+	@phpunit --colors tests/integration
+
+test-cov:
+	@XDEBUG_MODE=coverage phpunit --coverage-filter ./src --coverage-clover ./clover.xml --coverage-html cover/ ./tests/integration/
+	@coverage-check ./clover.xml 70 --only-percentage
+
+exec:
+	@docker container exec -it backend bash
+
+exec-root:
+	@docker container exec -it -u root backend bash
+
+ci-cd:
+	@gh extension exec act --job ci

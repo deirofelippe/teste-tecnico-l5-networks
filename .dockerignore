@@ -1,3 +1,5 @@
 vendor/
 cache/*
 .git
+clover.xml
+cover
