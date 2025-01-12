@@ -3,18 +3,23 @@
 class FindFilmById
 {
     private HttpClient $httpClient;
+    private Logger $logger;
     private Cache $cache;
 
     public function __construct(
         HttpClient $httpClient,
+        Logger $logger,
         Cache $cache
     ) {
         $this->httpClient = $httpClient;
+        $this->logger = $logger;
         $this->cache = $cache;
     }
 
     public function execute(string $id): array
     {
+        $this->logger->register("DEBUG", "API", "Dados do request: \n\n".json_encode(["id" => $id]));
+
         $film = [];
         $cache_name = "film_$id";
 
@@ -36,6 +41,8 @@ class FindFilmById
         $months = ($years * 12) + $film_month;
         $days = ($years * 365) + $film_day;
 
+        $this->logger->register("INFO", "API", "Selecionando os dados do filme...");
+
         $result = [
             "id" => $id,
             "title" => $film["title"],
@@ -47,9 +54,14 @@ class FindFilmById
             "film_age" => "$years anos, $months meses e $days dias",
         ];
 
+        $this->logger->register("INFO", "API", "Buscando os personagens do filme...");
+
         $characters = $this->get_characters($film["characters"]);
 
         $result["characters"] = $characters;
+
+        $this->logger->register("INFO", "API", "Finalizando requisição...");
+        $this->logger->register("DEBUG", "API", "Dados do response: \n\n".json_encode($result));
 
         return $result;
     }
@@ -77,6 +89,8 @@ class FindFilmById
 
                 $this->cache->set($cache_name, $character);
             }
+
+            $this->logger->register("INFO", "API", "Selecionando os dados do personagem...");
 
             array_push($characters, [
                 "id" => $id,

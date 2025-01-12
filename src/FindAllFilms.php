@@ -3,18 +3,23 @@
 class FindAllFilms
 {
     private HttpClient $httpClient;
+    private Logger $logger;
     private Cache $cache;
 
     public function __construct(
         HttpClient $httpClient,
+        Logger $logger,
         Cache $cache
     ) {
         $this->httpClient = $httpClient;
+        $this->logger = $logger;
         $this->cache = $cache;
     }
 
     public function execute(): array
     {
+        $this->logger->register("DEBUG", "API", "Dados do request: \n\n".json_encode([]));
+
         $films = [];
         $cache_name = "films";
 
@@ -41,6 +46,7 @@ class FindAllFilms
             ];
         };
 
+        $this->logger->register("INFO", "API", "Selecionando os dados dos filmes...");
         $films = array_map($get_films_data, $films);
 
         $sort = function ($film1, $film2) {
@@ -53,7 +59,11 @@ class FindAllFilms
             return ($film1_timestamp < $film2_timestamp) ? -1 : 1;
         };
 
+        $this->logger->register("INFO", "API", "Ordenando os filmes...");
         uasort($films, $sort);
+
+        $this->logger->register("INFO", "API", "Finalizando requisição...");
+        $this->logger->register("DEBUG", "API", "Dados do response: \n\n".json_encode($films));
 
         return $films;
     }

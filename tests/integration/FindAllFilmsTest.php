@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__."/../../src/HttpClient.php";
 require_once __DIR__."/../../src/Cache.php";
 require_once __DIR__."/../../src/FindAllFilms.php";
+require_once __DIR__."/../../src/Logger.php";
 
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +26,8 @@ final class FindAllFilmsTest extends TestCase
         $mock_response = ["results" => [["url" => "https://teste.com/125/","title" => "titulo teste","release_date" => "1977-10-01"]]];
         $mock_http_client->shouldReceive('get')->andReturn($mock_response);
 
-        $service = new FindAllFilms($mock_http_client, $mock_cache);
+        $logger = new Logger();
+        $service = new FindAllFilms($mock_http_client, $logger, $mock_cache);
 
         $films = $service->execute();
 
