@@ -1,5 +1,5 @@
 test:
-	@phpunit --colors tests/integration
+	@ENV=test phpunit --colors tests/integration/
 
 test-cov:
 	@XDEBUG_MODE=coverage phpunit --coverage-filter ./src --coverage-clover ./clover.xml --coverage-html cover/ ./tests/integration/
