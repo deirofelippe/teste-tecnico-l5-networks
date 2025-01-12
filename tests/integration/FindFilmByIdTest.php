@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__."/../../src/HttpClient.php";
+require_once __DIR__."/../../src/Logger.php";
 require_once __DIR__."/../../src/Cache.php";
 require_once __DIR__."/../../src/FindFilmById.php";
 
@@ -54,7 +55,9 @@ final class FindFilmByIdTest extends TestCase
         $mock_http_client->shouldReceive('get')->once()->andReturn($mock_response_character1);
         $mock_http_client->shouldReceive('get')->once()->andReturn($mock_response_character2);
 
-        $service = new FindFilmById($mock_http_client, $mock_cache);
+        $logger = new Logger();
+
+        $service = new FindFilmById($mock_http_client, $logger, $mock_cache);
 
         $film_id = "1";
         $film = $service->execute($film_id);
