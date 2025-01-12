@@ -19,7 +19,6 @@ jobs:
           - 6603:3306
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: l5_test
         options: >-
           --health-cmd "mysqladmin ping"
           --health-interval 10s
@@ -39,9 +38,12 @@ jobs:
       - name: Install dependencies
         run: composer update
 
+      - name: Create database and tables
+        run: ENV=ci php ./setup_database_ci.php
+
       - name: Run test coverage and check
         run: |
-          XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-filter ./src --coverage-clover ./clover.xml ./tests/integration/
+          XDEBUG_MODE=coverage ENV=ci ./vendor/bin/phpunit --coverage-filter ./src --coverage-clover ./clover.xml ./tests/integration/
           ./vendor/bin/coverage-check ./clover.xml 70 --only-percentage
 
   #     - name: Check dependencies for vulnerabilities
