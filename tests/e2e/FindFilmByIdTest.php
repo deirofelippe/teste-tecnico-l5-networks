@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__."/../../src/HttpClient.php";
+require_once __DIR__."/../../src/Logger.php";
 require_once __DIR__."/../../src/Cache.php";
 require_once __DIR__."/../../src/FindFilmById.php";
 
@@ -14,10 +15,12 @@ final class FindFilmByIdTest extends TestCase
     {
         date_default_timezone_set("America/Sao_Paulo");
 
-        $httpClient = new HttpClient();
-        $cache = new Cache();
+        $logger = new Logger();
+        $httpClient = new HttpClient($logger);
+        $cache = new Cache($logger);
 
-        $service = new FindFilmById($httpClient, $cache);
+
+        $service = new FindFilmById($httpClient, $logger, $cache);
 
         $id = "1";
         $film = $service->execute($id);
