@@ -5,7 +5,7 @@ class HttpClient
     private Logger $logger;
 
     public function __construct(
-        Logger $logger,
+        Logger $logger
     ) {
         $this->logger = $logger;
     }
