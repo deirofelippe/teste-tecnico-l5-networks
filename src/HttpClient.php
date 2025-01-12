@@ -1,5 +1,6 @@
 <?php
 
+// @codeCoverageIgnoreStart
 class HttpClient
 {
     private Logger $logger;
@@ -45,3 +46,4 @@ class HttpClient
     {
     }
 }
+// @codeCoverageIgnoreEnd

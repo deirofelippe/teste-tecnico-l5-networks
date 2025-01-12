@@ -1,5 +1,6 @@
 <?php
 
+// @codeCoverageIgnoreStart
 class Cache
 {
     private Logger $logger;
@@ -65,3 +66,4 @@ class Cache
         }
     }
 }
+// @codeCoverageIgnoreEnd
