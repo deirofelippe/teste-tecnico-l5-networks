@@ -1,11 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-require_once __DIR__."/../../src/HttpClient.php";
-require_once __DIR__."/../../src/Logger.php";
-require_once __DIR__."/../../src/Cache.php";
-require_once __DIR__."/../../src/FindAllFilms.php";
+require_once __DIR__."/../../src/utils/RequireAll.php";
 
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +8,8 @@ final class FindAllFilmsTest extends TestCase
 {
     public function test_deve_buscar_filmes(): void
     {
-        $logger = new Logger();
+        $pdo = DatabaseSingleton::getInstance();
+        $logger = new Logger(new LogsRepository($pdo));
         $httpClient = new HttpClient($logger);
         $cache = new Cache($logger);
 
