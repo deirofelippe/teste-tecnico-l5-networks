@@ -1,11 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-require_once __DIR__."/../../src/HttpClient.php";
-require_once __DIR__."/../../src/Cache.php";
-require_once __DIR__."/../../src/FindAllFilms.php";
-require_once __DIR__."/../../src/Logger.php";
+require_once __DIR__."/../../src/utils/RequireAll.php";
 
 use PHPUnit\Framework\TestCase;
 
@@ -26,8 +21,10 @@ final class FindAllFilmsTest extends TestCase
         $mock_response = ["results" => [["url" => "https://teste.com/125/","title" => "titulo teste","release_date" => "1977-10-01"]]];
         $mock_http_client->shouldReceive('get')->andReturn($mock_response);
 
-        $logger = new Logger();
-        $service = new FindAllFilms($mock_http_client, $logger, $mock_cache);
+        $mock_logger = \Mockery::mock(Logger::class);
+        $mock_logger->shouldReceive('register');
+
+        $service = new FindAllFilms($mock_http_client, $mock_logger, $mock_cache);
 
         $films = $service->execute();
 
