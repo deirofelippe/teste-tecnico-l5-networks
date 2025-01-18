@@ -1,11 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-require_once __DIR__."/../../src/HttpClient.php";
-require_once __DIR__."/../../src/Logger.php";
-require_once __DIR__."/../../src/Cache.php";
-require_once __DIR__."/../../src/FindFilmById.php";
+require_once __DIR__."/../../src/utils/RequireAll.php";
 
 use PHPUnit\Framework\TestCase;
 
@@ -55,9 +50,10 @@ final class FindFilmByIdTest extends TestCase
         $mock_http_client->shouldReceive('get')->once()->andReturn($mock_response_character1);
         $mock_http_client->shouldReceive('get')->once()->andReturn($mock_response_character2);
 
-        $logger = new Logger();
+        $mock_logger = \Mockery::mock(Logger::class);
+        $mock_logger->shouldReceive('register');
 
-        $service = new FindFilmById($mock_http_client, $logger, $mock_cache);
+        $service = new FindFilmById($mock_http_client, $mock_logger, $mock_cache);
 
         $film_id = "1";
         $film = $service->execute($film_id);
