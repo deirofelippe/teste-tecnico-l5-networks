@@ -1,3 +1,6 @@
+server:
+	@php -S 0.0.0.0:3000 /home/php/app/src/index.php
+
 test:
 	@ENV=test phpunit --colors tests/integration/
 

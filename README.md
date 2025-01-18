@@ -49,6 +49,7 @@
         - Fazer testes de unidade
         - Cobertura de codigo de 80%
     - Código modular e de fácil manutenção
+    - Validar todos os campos de entrada, limit, offset
     - Segurança
 - Documentação:
     - Desenho da arquitetura
@@ -67,3 +68,27 @@
     - Docker
     - Indíce, fulltextsearch para busca mais rápida, caso o sistema esteja lento.
     - Uso de framework para facilitar o uso
+
+
+
+// gerenciador de dependencias
+// render em classe diferente
+// mais dinamico as rotas e registros
+
+terminar logs
+criar login e cadastro
+fazer comentarios
+faze pagina de characters
+tratamento de erro global com erro 500 em caso de problema
+    http_response_code(500)
+    header("HTTP/1.1 404 Not Found")
+    header("Content-Type: application/json")
+        echo json_encode(["name"=>"Felippe"])
+
+usar jquery
+fazer teste de carga
+
+
+// v1 - terminar os logs e paginas com bootstrap
+// v1.1 - login e pagina
+// v1.2 - comentarios e pagina
