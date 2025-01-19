@@ -16,3 +16,6 @@ exec-root:
 
 ci-cd:
 	@gh extension exec act --job ci
+
+cs-fix:
+	@php-cs-fixer fix --config .php-cs-fixer.dist.php src/
