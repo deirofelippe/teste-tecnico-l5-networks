@@ -5,7 +5,7 @@ class ShowLogsController extends View
     private ShowLogsService $service;
 
     public function __construct(
-        ShowLogsService $service,
+        ShowLogsService $service
     ) {
         $this->service = $service;
     }

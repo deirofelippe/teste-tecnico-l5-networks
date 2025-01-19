@@ -5,7 +5,7 @@ class LogsRepository
     private PDO $pdo;
 
     public function __construct(
-        PDO $pdo,
+        PDO $pdo
     ) {
         $this->pdo = $pdo;
     }
