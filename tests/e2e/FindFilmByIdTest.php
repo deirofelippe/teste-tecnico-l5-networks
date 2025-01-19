@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/../../src/utils/RequireAll.php";
+require_once __DIR__ . '/../../src/utils/RequireAll.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -13,10 +13,9 @@ final class FindFilmByIdTest extends TestCase
         $httpClient = new HttpClient($logger);
         $cache = new Cache($logger);
 
-
         $service = new FindFilmById($httpClient, $logger, $cache);
 
-        $id = "1";
+        $id = '1';
         $film = $service->execute($id);
 
         $this->assertSame(9, count($film));

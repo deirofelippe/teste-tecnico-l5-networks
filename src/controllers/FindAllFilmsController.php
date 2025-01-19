@@ -14,6 +14,6 @@ class FindAllFilmsController extends View
     {
         $response = $this->service->execute();
 
-        $this->render_page($response, "films");
+        $this->render_page($response, 'films');
     }
 }

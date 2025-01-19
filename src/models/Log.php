@@ -9,7 +9,7 @@ class Log
 
     public function __construct(string $level, string $context, string $description)
     {
-        $this->datetime = date("Y-m-d H:i:s");
+        $this->datetime = date('Y-m-d H:i:s');
         $this->level = strtoupper($level);
         $this->context = strtoupper($context);
         $this->description = $description;
@@ -18,10 +18,10 @@ class Log
     public function get_attributes(): array
     {
         return [
-            "datetime" => $datetime,
-            "level" => $level,
-            "context" => $context,
-            "description" => $description,
+            'datetime' => $datetime,
+            'level' => $level,
+            'context' => $context,
+            'description' => $description,
         ];
     }
 }

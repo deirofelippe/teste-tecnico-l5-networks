@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/../../src/utils/RequireAll.php";
+require_once __DIR__ . '/../../src/utils/RequireAll.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -18,16 +18,16 @@ final class ShowLogsTestTest extends TestCase
 
         $mock_logs = [
             [
-                "datetime" => "2025-01-18 14:15:20",
-                "level" => "INFO",
-                "context" => "Contexto 1",
-                "description" => "Descrição 1",
+                'datetime' => '2025-01-18 14:15:20',
+                'level' => 'INFO',
+                'context' => 'Contexto 1',
+                'description' => 'Descrição 1',
             ],
             [
-                "datetime" => "2023-01-18 18:18:28",
-                "level" => "INFO",
-                "context" => "Contexto 2",
-                "description" => "Descrição 2",
+                'datetime' => '2023-01-18 18:18:28',
+                'level' => 'INFO',
+                'context' => 'Contexto 2',
+                'description' => 'Descrição 2',
             ],
         ];
         $limit = 2;
@@ -46,15 +46,15 @@ final class ShowLogsTestTest extends TestCase
 
         $this->assertSame(6, count($response));
 
-        $this->assertSame("18/01/2025 14:15:20", $response["logs"][0]["datetime"]);
-        $this->assertSame("INFO", $response["logs"][0]["level"]);
-        $this->assertSame("Contexto 1", $response["logs"][0]["context"]);
-        $this->assertSame("Descrição 1", $response["logs"][0]["description"]);
+        $this->assertSame('18/01/2025 14:15:20', $response['logs'][0]['datetime']);
+        $this->assertSame('INFO', $response['logs'][0]['level']);
+        $this->assertSame('Contexto 1', $response['logs'][0]['context']);
+        $this->assertSame('Descrição 1', $response['logs'][0]['description']);
 
-        $this->assertSame($mock_total_logs, $response["total_logs"]);
-        $this->assertSame($limit, $response["limit"]);
-        $this->assertSame($offset, $response["offset"]);
-        $this->assertSame($mock_next, $response["next"]);
-        $this->assertSame($mock_previous, $response["previous"]);
+        $this->assertSame($mock_total_logs, $response['total_logs']);
+        $this->assertSame($limit, $response['limit']);
+        $this->assertSame($offset, $response['offset']);
+        $this->assertSame($mock_next, $response['next']);
+        $this->assertSame($mock_previous, $response['previous']);
     }
 }

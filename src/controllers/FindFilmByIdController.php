@@ -14,6 +14,6 @@ class FindFilmByIdController extends View
     {
         $response = $this->service->execute($id);
 
-        $this->render_page($response, "film");
+        $this->render_page($response, 'film');
     }
 }

@@ -17,6 +17,6 @@ class ShowLogsController extends View
 
         $response = $this->service->execute($limit, $offset);
 
-        $this->render_page($response, "logs");
+        $this->render_page($response, 'logs');
     }
 }

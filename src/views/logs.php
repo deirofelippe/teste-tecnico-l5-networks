@@ -29,12 +29,12 @@
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($data["logs"] as $index => $log) { ?>
+        <?php foreach ($data['logs'] as $index => $log) { ?>
           <tr>
-            <th scope="row"><?=$log["datetime"] ?></th>
-            <td><?=$log["level"] ?></td>
-            <td><?=$log["context"] ?></td>
-            <td><?=$log["description"] ?></td>
+            <th scope="row"><?=$log['datetime'] ?></th>
+            <td><?=$log['level'] ?></td>
+            <td><?=$log['context'] ?></td>
+            <td><?=$log['description'] ?></td>
           </tr>
         <?php } ?>
       </tbody>
@@ -42,11 +42,11 @@
   </main>
 
   <div class="">
-    <a href="/logs?limit=<?=$data["limit"] ?>&offset=<?=$data["previous"] ?>">Anterior</a>
+    <a href="/logs?limit=<?=$data['limit'] ?>&offset=<?=$data['previous'] ?>">Anterior</a>
     <span>
-      <?=$data["offset"] ?> de <?=$data["total_logs"] ?> logs
+      <?=$data['offset'] ?> de <?=$data['total_logs'] ?> logs
     </span>
-    <a href="/logs?limit=<?=$data["limit"] ?>&offset=<?=$data["next"] ?>">Próximo</a>
+    <a href="/logs?limit=<?=$data['limit'] ?>&offset=<?=$data['next'] ?>">Próximo</a>
   </div>
 
   <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

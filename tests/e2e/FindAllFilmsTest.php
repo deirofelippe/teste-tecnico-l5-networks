@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/../../src/utils/RequireAll.php";
+require_once __DIR__ . '/../../src/utils/RequireAll.php';
 
 use PHPUnit\Framework\TestCase;
 

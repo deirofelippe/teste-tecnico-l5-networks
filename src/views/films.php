@@ -19,9 +19,9 @@
         <div>
           <?php foreach ($data as $index => $film) { ?>
             <div>
-              <h1><?=$film["title"] ?></h1>
-              <p><?=$film["release_date"] ?></p>
-              <a href="/film/<?=$film["id"] ?>">Ver detalhes</a>
+              <h1><?=$film['title'] ?></h1>
+              <p><?=$film['release_date'] ?></p>
+              <a href="/film/<?=$film['id'] ?>">Ver detalhes</a>
             </div>
           <?php } ?>
         </div>

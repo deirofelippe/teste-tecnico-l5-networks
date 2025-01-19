@@ -22,13 +22,13 @@ class ShowLogsService
         $total_logs = $logs_repository->get_total_logs();
 
         $format_logs_datetime = function (array $log) {
-            $datetime = DateTimeImmutable::createFromFormat("Y-m-d H:i:s", $log["datetime"])->format("d/m/Y H:i:s");
+            $datetime = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $log['datetime'])->format('d/m/Y H:i:s');
 
             return [
-                "datetime" => $datetime,
-                "level" => $log["level"],
-                "context" => $log["context"],
-                "description" => $log["description"],
+                'datetime' => $datetime,
+                'level' => $log['level'],
+                'context' => $log['context'],
+                'description' => $log['description'],
             ];
         };
 
@@ -45,12 +45,12 @@ class ShowLogsService
         }
 
         $response = [
-            "logs" => $logs,
-            "total_logs" => $total_logs,
-            "limit" => $limit,
-            "offset" => $offset,
-            "next" => $next,
-            "previous" => $previous,
+            'logs' => $logs,
+            'total_logs' => $total_logs,
+            'limit' => $limit,
+            'offset' => $offset,
+            'next' => $next,
+            'previous' => $previous,
         ];
 
         return $response;

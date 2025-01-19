@@ -18,18 +18,18 @@
     <main>
         <div>
           <div>
-            <h1>Título: <?=$data["title"] ?></h1>
-            <p>Episódio: <?=$data["episode"] ?></p>
-            <p>Data de lançamento: <?=$data["release_date"] ?></p>
-            <p>Diretores(as): <?=$data["director"] ?></p>
-            <p>Produtores(as): <?=$data["producer"] ?></p>
-            <p>Idade do filme: <?=$data["film_age"] ?></p>
+            <h1>Título: <?=$data['title'] ?></h1>
+            <p>Episódio: <?=$data['episode'] ?></p>
+            <p>Data de lançamento: <?=$data['release_date'] ?></p>
+            <p>Diretores(as): <?=$data['director'] ?></p>
+            <p>Produtores(as): <?=$data['producer'] ?></p>
+            <p>Idade do filme: <?=$data['film_age'] ?></p>
             <p>Personagens: 
-              <?php foreach ($data["characters"] as $index => $character) { ?>
-                <a href="/character/<?=$character["id"] ?>"> <?=$character["name"] ?> </a>
-              <?php } ?>
-            </p>
-            <p>Sinopse: <br /> <?=$data["opening_crawl"] ?></p>
+      <?php foreach ($data['characters'] as $index => $character) { ?>
+        <a href="/character/<?=$character['id'] ?>"> <?=$character['name'] ?> </a>
+      <?php } ?>
+    </p>
+            <p>Sinopse: <br /> <?=$data['opening_crawl'] ?></p>
           </div>
         </div>
     </main>

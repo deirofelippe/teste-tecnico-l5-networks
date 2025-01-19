@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/../../src/utils/RequireAll.php";
+require_once __DIR__ . '/../../src/utils/RequireAll.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -20,9 +20,9 @@ final class ShowLogsTest extends TestCase
         $response = $service->execute($limit, $offset);
 
         $this->assertSame(6, count($response));
-        $this->assertSame(3, count($response["logs"]));
-        $this->assertSame(3, $response["next"]);
-        $this->assertSame(0, $response["previous"]);
+        $this->assertSame(3, count($response['logs']));
+        $this->assertSame(3, $response['next']);
+        $this->assertSame(0, $response['previous']);
     }
 }
 
