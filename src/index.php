@@ -6,6 +6,20 @@ $uri = $_SERVER['REQUEST_URI'];
 $query_string = $_SERVER['QUERY_STRING'] ?? '';
 $query_string = get_logs_query_string($query_string);
 
+load_if_is_static_file($uri);
+
+function load_if_is_static_file(string $uri)
+{
+    $pattern = '/(.css)$/i';
+    $is_static_file = preg_match($pattern, $uri);
+
+    if ($is_static_file) {
+        header('Content-Type: text/css');
+        include_once __DIR__ . "/views/$uri";
+        exit(0);
+    }
+}
+
 function is_same_uri($request_uri, $registered_uri)
 {
     $request_uri = explode('?', $request_uri)[0];
