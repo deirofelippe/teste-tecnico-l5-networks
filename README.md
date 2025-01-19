@@ -88,6 +88,7 @@ tratamento de erro global com erro 500 em caso de problema
 usar jquery
 fazer teste de carga
 
+// testar se data está no padrão certo, se está ordenado, quantidade next previous e outros, limpar os registros das tabelas
 
 // v1 - terminar os logs e paginas com bootstrap
 // v1.1 - login e pagina
