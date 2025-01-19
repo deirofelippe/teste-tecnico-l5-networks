@@ -2,10 +2,10 @@
 
 class FindFilmByIdController extends View
 {
-    private FindFilmById $service;
+    private FindFilmByIdService $service;
 
     public function __construct(
-        FindFilmById $service
+        FindFilmByIdService $service
     ) {
         $this->service = $service;
     }

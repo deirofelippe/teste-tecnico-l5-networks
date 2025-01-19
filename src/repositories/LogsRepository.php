@@ -16,7 +16,7 @@ class LogsRepository
 
         $attributes = $log->get_attributes();
 
-        $execute = function () use ($pdo, $attributes): int {
+        $execute = function () use ($pdo, $attributes) {
             $stmt = $pdo->prepare('INSERT INTO Log (datetime, level, context, description) VALUES (:datetime, :level, :context, :description)');
 
             $stmt->bindParam(':datetime', $attributes['datetime']);
