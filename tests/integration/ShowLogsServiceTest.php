@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../src/utils/RequireAll.php';
 
 use PHPUnit\Framework\TestCase;
 
-final class ShowLogsTest extends TestCase
+final class ShowLogsServiceTest extends TestCase
 {
     protected function tearDown(): void
     {

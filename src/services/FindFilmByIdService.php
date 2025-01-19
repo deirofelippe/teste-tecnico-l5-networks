@@ -1,6 +1,6 @@
 <?php
 
-class FindFilmById
+class FindFilmByIdService
 {
     private HttpClient $httpClient;
     private Logger $logger;

@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../src/utils/RequireAll.php';
 
 use PHPUnit\Framework\TestCase;
 
-final class ShowLogsTest extends TestCase
+final class ShowLogsServiceTest extends TestCase
 {
     public function test_deve_buscar_logs(): void
     {
@@ -25,5 +25,3 @@ final class ShowLogsTest extends TestCase
         $this->assertSame(0, $response['previous']);
     }
 }
-
-// testar se data está no padrão certo, se está ordenado, quantidade next previous e outros, limpar os registros das tabelas

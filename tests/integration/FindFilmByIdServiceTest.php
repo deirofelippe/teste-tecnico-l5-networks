@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../src/utils/RequireAll.php';
 
 use PHPUnit\Framework\TestCase;
 
-final class FindFilmByIdTest extends TestCase
+final class FindFilmByIdServiceTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -53,7 +53,7 @@ final class FindFilmByIdTest extends TestCase
         $mock_logger = \Mockery::mock(Logger::class);
         $mock_logger->shouldReceive('register');
 
-        $service = new FindFilmById($mock_http_client, $mock_logger, $mock_cache);
+        $service = new FindFilmByIdService($mock_http_client, $mock_logger, $mock_cache);
 
         $film_id = '1';
         $film = $service->execute($film_id);

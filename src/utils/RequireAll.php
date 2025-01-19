@@ -14,8 +14,8 @@ require_once __DIR__ . '/../HttpClient.php';
 
 require_once __DIR__ . '/../models/Log.php';
 
-require_once __DIR__ . '/../FindAllFilms.php';
-require_once __DIR__ . '/../FindFilmById.php';
+require_once __DIR__ . '/../services/FindAllFilmsService.php';
+require_once __DIR__ . '/../services/FindFilmByIdService.php';
 require_once __DIR__ . '/../services/ShowLogsService.php';
 
 require_once __DIR__ . '/../repositories/LogsRepository.php';

@@ -1,6 +1,6 @@
 <?php
 
-class FindAllFilms
+class FindAllFilmsService
 {
     private HttpClient $httpClient;
     private Logger $logger;
