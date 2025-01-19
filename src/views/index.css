@@ -1,0 +1,20 @@
+.container {
+    max-width: 960px;
+    padding: 0px;
+}
+
+.header-nav {
+    height: 50px;
+}
+
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+    .header-nav > div > a {
+        margin-left: 16px;
+    }
+}
+/* < 1000px, adiciona mx-3 */
