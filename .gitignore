@@ -3,3 +3,4 @@ cache/*
 !cache/.gitkeep
 clover.xml
 cover
+.php-cs-fixer.cache

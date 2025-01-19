@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/Env.php";
+require_once __DIR__ . '/Env.php';
 
 class DatabaseSingleton
 {
@@ -19,7 +19,7 @@ class DatabaseSingleton
             $database = DB_DATABASE;
             $user = DB_USER;
             $password = DB_PASSWORD;
-            $charset = "utf8mb4";
+            $charset = 'utf8mb4';
 
             $options = [
                 PDO::ATTR_PERSISTENT => true,
