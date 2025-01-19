@@ -7,7 +7,7 @@ class ShowLogsService
 
     public function __construct(
         LogsRepository $logs_repository,
-        Logger $logger,
+        Logger $logger
     ) {
         $this->logs_repository = $logs_repository;
         $this->logger = $logger;

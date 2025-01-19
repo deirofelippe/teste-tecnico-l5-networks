@@ -16,7 +16,7 @@ return (new PhpCsFixer\Config())
             'operators' => [
                 // '=>' => 'align',
                 // '=' => 'align'
-            ]
+            ],
         ],
         // 'blank_line_after_opening_tag' => true,
         // 'blank_line_before_statement' => true,
@@ -83,7 +83,7 @@ return (new PhpCsFixer\Config())
         // 'space_after_semicolon' => true,
         // 'standardize_not_equals' => true,
         'ternary_operator_spaces' => true,
-        // 'trailing_comma_in_multiline' => ['elements' => ['arrays']],
+        'trailing_comma_in_multiline' => ['elements' => ['array_destructuring', 'arrays']],
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
