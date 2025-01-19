@@ -7,11 +7,17 @@ test:
 test-cov:
 	@XDEBUG_MODE=coverage phpunit \
 		--coverage-filter ./src/services \
-		--coverage-filter ./src/repositories \
 		--coverage-clover ./clover.xml \
 		--coverage-html cover/ \
 		./tests/integration/
-	@coverage-check ./clover.xml 70 --only-percentage
+	@coverage-check ./clover.xml 80 --only-percentage
+
+test-cov-ci:
+	@XDEBUG_MODE=coverage ENV=ci ./vendor/bin/phpunit \
+		--coverage-filter ./src/services \
+		--coverage-clover ./clover.xml \
+		./tests/integration/
+	@./vendor/bin/coverage-check ./clover.xml 80 --only-percentage
 
 exec:
 	@docker container exec -it backend bash
