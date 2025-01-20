@@ -14,8 +14,6 @@ class GetAuthorsCommentsController extends View
     {
         $response = $this->service->execute();
 
-        //dd($response[0]);
-
         $this->render_page($response, 'authors_comments');
     }
 }

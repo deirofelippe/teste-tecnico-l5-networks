@@ -10,10 +10,10 @@ final class FindAllFilmsServiceTest extends TestCase
     {
         $pdo = DatabaseSingleton::getInstance();
         $logger = new Logger(new LogsRepository($pdo));
-        $httpClient = new HttpClient($logger);
+        $http_client = new HttpClient($logger);
         $cache = new Cache($logger);
 
-        $service = new FindAllFilmsService($httpClient, $logger, $cache);
+        $service = new FindAllFilmsService($http_client, $logger, $cache);
 
         $films = $service->execute();
 

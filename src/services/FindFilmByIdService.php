@@ -2,18 +2,18 @@
 
 class FindFilmByIdService
 {
-    private HttpClient $httpClient;
+    private HttpClient $http_client;
     private Logger $logger;
     private Cache $cache;
     private CommentsRepository $comments_repository;
 
     public function __construct(
-        HttpClient $httpClient,
+        HttpClient $http_client,
         Logger $logger,
         Cache $cache,
         CommentsRepository $comments_repository
     ) {
-        $this->httpClient = $httpClient;
+        $this->http_client = $http_client;
         $this->logger = $logger;
         $this->cache = $cache;
         $this->comments_repository = $comments_repository;
@@ -30,7 +30,7 @@ class FindFilmByIdService
         $no_cache = count($film) < 1;
         if ($no_cache) {
             $url = "https://swapi.py4e.com/api/films/$id/?format=json";
-            $film = $this->httpClient->get($url);
+            $film = $this->http_client->get($url);
 
             $this->cache->set($cache_name, $film);
         }
@@ -90,7 +90,7 @@ class FindFilmByIdService
             $character = $this->cache->get($cache_name);
             $no_cache = count($character) < 1;
             if ($no_cache) {
-                $character = $this->httpClient->get($url);
+                $character = $this->http_client->get($url);
 
                 $this->cache->set($cache_name, $character);
             }
