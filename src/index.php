@@ -128,7 +128,7 @@ $routes = [
     '/films' => $init_find_all_films,
     '/films/{id}' => $init_find_film_by_id,
     '/logs' => $init_logs,
-    '/comment' => $init_create_comment,
+    '/comments' => $init_create_comment,
     '/authors/comments' => $init_get_authors_comments,
 ];
 

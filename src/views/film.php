@@ -77,7 +77,7 @@
       const author = $('input[name="name"]').val();
       const comment = $('textarea[name="comment"]').val();
       
-      const url = "<?=$backend_url?>/comment";
+      const url = "<?=$backend_url?>/comments";
       const body = {
         "film_id": film_id,
         "film_name": film_name,
