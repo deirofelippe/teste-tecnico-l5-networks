@@ -4,15 +4,13 @@ networks:
     driver: bridge
 
 services:
-  backend:
+  app:
     image: deirofelippe/teste-tecnico-l5-networks:latest
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: backend
-    command: sleep infinity
-    # env_file:
-    #   - ./.env
+    container_name: app
+    #command: sleep infinity
     volumes:
       - "./:/home/php/app"
     ports:
