@@ -28,11 +28,16 @@ class ShowLogsService
         $format_logs_datetime = function (array $log) {
             $datetime = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $log['datetime'])->format('d/m/Y H:i:s');
 
+            $description = $log['description'];
+            if (strlen($description) > 186) {
+                $description = "<textarea class='w-100'>$description</textarea>";
+            }
+
             return [
                 'datetime' => $datetime,
                 'level' => $log['level'],
                 'context' => $log['context'],
-                'description' => $log['description'],
+                'description' => $description,
             ];
         };
 
