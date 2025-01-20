@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mb-5">
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 text-center">
     <?php foreach ($data as $index => $film) { ?>
       <div class="col gy-4 ">
