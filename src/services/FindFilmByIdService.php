@@ -5,15 +5,18 @@ class FindFilmByIdService
     private HttpClient $httpClient;
     private Logger $logger;
     private Cache $cache;
+    private CommentsRepository $comments_repository;
 
     public function __construct(
         HttpClient $httpClient,
         Logger $logger,
-        Cache $cache
+        Cache $cache,
+        CommentsRepository $comments_repository
     ) {
         $this->httpClient = $httpClient;
         $this->logger = $logger;
         $this->cache = $cache;
+        $this->comments_repository = $comments_repository;
     }
 
     public function execute(string $id): array
@@ -57,8 +60,10 @@ class FindFilmByIdService
         $this->logger->register('INFO', 'API', 'Buscando os personagens do filme...');
 
         $characters = $this->get_characters($film['characters']);
+        $comments = $this->get_film_comments($id);
 
         $result['characters'] = $characters;
+        $result = array_merge($result, $comments);
 
         $this->logger->register('INFO', 'API', 'Finalizando requisição...');
         $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($result));
@@ -99,5 +104,28 @@ class FindFilmByIdService
         }
 
         return $characters;
+    }
+
+    private function get_film_comments(int $film_id): array
+    {
+        $comments = $this->comments_repository->get_comments_by_film_id($film_id);
+
+        if (count($comments) < 1) {
+            return [
+                'total_comments' => 0,
+                'comments' => [],
+            ];
+        }
+
+        $updated_comments = array_map(function ($comment) {
+            $date = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $comment['date'])->format('d/m/Y H:i');
+            $comment['date'] = $date;
+            return $comment;
+        }, $comments);
+
+        return [
+            'total_comments' => count($updated_comments),
+            'comments' => $updated_comments,
+        ];
     }
 }
