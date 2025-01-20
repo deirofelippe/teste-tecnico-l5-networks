@@ -30,3 +30,4 @@ ci-cd:
 
 cs-fix:
 	@php-cs-fixer fix --config .php-cs-fixer.dist.php src/
+	@php-cs-fixer fix --config .php-cs-fixer.dist.php tests/
