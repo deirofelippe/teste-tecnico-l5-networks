@@ -76,15 +76,15 @@ $init_find_film_by_id = function (string $request_uri, string $registered_uri) u
     $controller->execute($id);
 };
 
-$init_find_all_films = function (string $uri) use ($httpClient, $logger, $cache) {
-    $service = new FindAllFilmsService($httpClient, $logger, $cache);
+$init_find_all_films = function (string $uri) use ($http_client, $logger, $cache) {
+    $service = new FindAllFilmsService($http_client, $logger, $cache);
     $controller = new FindAllFilmsController($service);
 
     $controller->execute();
 };
 
-$init_logs = function (string $uri) use ($logsRepository, $logger, $query_string) {
-    $service = new ShowLogsService($logsRepository, $logger);
+$init_logs = function (string $uri) use ($logs_repository, $logger, $query_string) {
+    $service = new ShowLogsService($logs_repository, $logger);
     $controller = new ShowLogsController($service);
 
     $limit = '10';
@@ -98,10 +98,25 @@ $init_logs = function (string $uri) use ($logsRepository, $logger, $query_string
     $controller->execute($limit, $offset);
 };
 
+$init_create_comment = function (string $uri) use ($pdo, $method) {
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
+
+    if ($method != 'POST') {
+        return;
+    }
+
+    $service = new CreateCommentService($pdo);
+    $controller = new CreateCommentController($service);
+
+    $controller->execute($data);
+};
+
 $routes = [
     '/' => $init_find_all_films,
     '/film/{id}' => $init_find_film_by_id,
     '/logs' => $init_logs,
+    '/comment' => $init_create_comment,
 ];
 
 foreach ($routes as $path => $function) {
