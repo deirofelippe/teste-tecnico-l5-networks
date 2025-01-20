@@ -3,6 +3,7 @@
 require_once __DIR__ . '/utils/RequireAll.php';
 
 $uri = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
 $query_string = $_SERVER['QUERY_STRING'] ?? '';
 $query_string = get_logs_query_string($query_string);
 
@@ -60,13 +61,14 @@ function get_logs_query_string(string $query_string)
 }
 
 $pdo = DatabaseSingleton::getInstance();
-$logsRepository = new LogsRepository($pdo);
-$logger = new Logger($logsRepository);
-$httpClient = new HttpClient($logger);
+$logs_repository = new LogsRepository($pdo);
+$logger = new Logger($logs_repository);
+$http_client = new HttpClient($logger);
 $cache = new Cache($logger);
 
-$init_find_film_by_id = function (string $request_uri, string $registered_uri) use ($httpClient, $logger, $cache) {
-    $service = new FindFilmByIdService($httpClient, $logger, $cache);
+$init_find_film_by_id = function (string $request_uri, string $registered_uri) use ($http_client, $logger, $cache, $pdo) {
+    $comments_repository = new CommentsRepository($pdo, $logger);
+    $service = new FindFilmByIdService($http_client, $logger, $cache, $comments_repository);
     $controller = new FindFilmByIdController($service);
 
     $id = extract_path_variable($request_uri, $registered_uri);
