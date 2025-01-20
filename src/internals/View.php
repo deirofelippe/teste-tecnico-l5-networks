@@ -4,7 +4,7 @@ class View
 {
     protected function render_page(array $data, string $page_name)
     {
-        $backend_url = 'http://localhost:3000';
+        $backend_url = BACKEND_URL;
 
         require_once __DIR__ . '/../views/index.php';
     }
