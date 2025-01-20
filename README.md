@@ -30,27 +30,12 @@
     - Usuário pode se cadastrar
     - Somente usuário cadastrado pode fazer um ranking de filmes e ver rankings de outras pessoas
     - Usuário pode listar os filmes mais amados
-    - O site deve ser responsivo
     - Validações nos dados de entrada e no banco de dados
     - Usar APM para monitorar a performance
     - GitHub Actions CI: Rodar testes automatizados e permitir o merge só quando tudo funcionou
     - Testar o frontend e backend com o cypress
     - Usar API versioning
     - Ferramentas de qualidade de código (PHP CS Fixer, PHP Stan)
-- Melhorias:
-    - GitHub Actions CD: Fazer deploy de forma automática
-    - Cache
-        - Criar expiracao
-        - Tratar erros
-    - Http request
-        - Retry e timeout
-        - Tratar erros
-    - Testes
-        - Fazer testes de unidade
-        - Cobertura de codigo de 80%
-    - Código modular e de fácil manutenção
-    - Validar todos os campos de entrada, limit, offset
-    - Segurança
 - Documentação:
     - Desenho da arquitetura
     - Desenho e explicação da organização das pastas
@@ -66,30 +51,21 @@
     - K6 e APM
     - Cypress
     - Docker
-    - Indíce, fulltextsearch para busca mais rápida, caso o sistema esteja lento.
-    - Uso de framework para facilitar o uso
 
+## Melhorias realizadas
 
+- Visualização dos logs
+- Página dos personagens
+- Criação de comentários no filme
+- Listagem de comentários de cada autor
+- Testes automatizados
+- Pipeline CI/CD no GitHub para verificar se o código está funcionando.
+- Cache (em disco) em cada requisição para aumentar a performance e não atingir o máximo de requests da API do Star Wars usada.
 
-// gerenciador de dependencias
-// render em classe diferente
-// mais dinamico as rotas e registros
+## Melhorias futuras
 
-terminar logs
-criar login e cadastro
-fazer comentarios
-faze pagina de characters
-tratamento de erro global com erro 500 em caso de problema
-    http_response_code(500)
-    header("HTTP/1.1 404 Not Found")
-    header("Content-Type: application/json")
-        echo json_encode(["name"=>"Felippe"])
-
-usar jquery
-fazer teste de carga
-
-// testar se data está no padrão certo, se está ordenado, quantidade next previous e outros, limpar os registros das tabelas
-
-// v1 - terminar os logs e paginas com bootstrap
-// v1.1 - login e pagina
-// v1.2 - comentarios e pagina
+- Testes com Cypress para garantir que o frontend e backend estão funcionando corretamente.
+- Tempo de expiração no cache.
+- Deixar mais dinâmico as rotas, a query string, o path parameter.
+- Organizar o a lógica que irá chamar o controller baseado na rota.
+- Fazer mais testes unitários para a lógica do service e de outras camadas.
