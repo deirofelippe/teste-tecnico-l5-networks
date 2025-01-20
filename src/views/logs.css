@@ -1,0 +1,12 @@
+.pagination {
+    height:50px;
+    width: 400px;
+    border-radius: 4px;
+    margin: 0px auto;
+    bottom: 4px;
+    background-color: #fff;
+}
+
+.logs-table {
+    margin-bottom: 70px;
+}

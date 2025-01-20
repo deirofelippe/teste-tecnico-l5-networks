@@ -18,10 +18,10 @@ class Log
     public function get_attributes(): array
     {
         return [
-            'datetime' => $datetime,
-            'level' => $level,
-            'context' => $context,
-            'description' => $description,
+            'datetime' => $this->datetime,
+            'level' => $this->level,
+            'context' => $this->context,
+            'description' => $this->description,
         ];
     }
 }

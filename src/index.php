@@ -6,6 +6,20 @@ $uri = $_SERVER['REQUEST_URI'];
 $query_string = $_SERVER['QUERY_STRING'] ?? '';
 $query_string = get_logs_query_string($query_string);
 
+load_if_is_static_file($uri);
+
+function load_if_is_static_file(string $uri)
+{
+    $pattern = '/(.css)$/i';
+    $is_static_file = preg_match($pattern, $uri);
+
+    if ($is_static_file) {
+        header('Content-Type: text/css');
+        include_once __DIR__ . "/views/$uri";
+        exit(0);
+    }
+}
+
 function is_same_uri($request_uri, $registered_uri)
 {
     $request_uri = explode('?', $request_uri)[0];
@@ -46,12 +60,13 @@ function get_logs_query_string(string $query_string)
 }
 
 $pdo = DatabaseSingleton::getInstance();
-$logger = new Logger($pdo);
+$logsRepository = new LogsRepository($pdo);
+$logger = new Logger($logsRepository);
 $httpClient = new HttpClient($logger);
 $cache = new Cache($logger);
 
 $init_find_film_by_id = function (string $request_uri, string $registered_uri) use ($httpClient, $logger, $cache) {
-    $service = new FindFilmById($httpClient, $logger, $cache);
+    $service = new FindFilmByIdService($httpClient, $logger, $cache);
     $controller = new FindFilmByIdController($service);
 
     $id = extract_path_variable($request_uri, $registered_uri);
@@ -60,14 +75,13 @@ $init_find_film_by_id = function (string $request_uri, string $registered_uri) u
 };
 
 $init_find_all_films = function (string $uri) use ($httpClient, $logger, $cache) {
-    $service = new FindAllFilms($httpClient, $logger, $cache);
+    $service = new FindAllFilmsService($httpClient, $logger, $cache);
     $controller = new FindAllFilmsController($service);
 
     $controller->execute();
 };
 
-$init_logs = function (string $uri) use ($pdo, $logger, $query_string) {
-    $logsRepository = new LogsRepository($pdo, $logger);
+$init_logs = function (string $uri) use ($logsRepository, $logger, $query_string) {
     $service = new ShowLogsService($logsRepository, $logger);
     $controller = new ShowLogsController($service);
 
