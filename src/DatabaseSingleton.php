@@ -12,7 +12,7 @@ class DatabaseSingleton
 
     public static function getInstance(): PDO
     {
-        $instance = self::$instance;
+        self::$instance;
         if (self::$instance != null) {
             return self::$instance;
         }
