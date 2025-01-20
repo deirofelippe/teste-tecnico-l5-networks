@@ -112,11 +112,23 @@ $init_create_comment = function (string $uri) use ($pdo, $method) {
     $controller->execute($data);
 };
 
+$init_get_authors_comments = function (string $uri) use ($pdo, $method) {
+    if ($method != 'GET') {
+        return;
+    }
+
+    $service = new GetAuthorsCommentsService($pdo);
+    $controller = new GetAuthorsCommentsController($service);
+
+    $controller->execute();
+};
+
 $routes = [
     '/' => $init_find_all_films,
     '/film/{id}' => $init_find_film_by_id,
     '/logs' => $init_logs,
     '/comment' => $init_create_comment,
+    '/authors/comments' => $init_get_authors_comments,
 ];
 
 foreach ($routes as $path => $function) {
