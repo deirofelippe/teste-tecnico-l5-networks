@@ -33,7 +33,7 @@
   </div>
   
   <div class="comments_section mb-5">
-    <h2>Comentários (<?= $data['total_comments']?>)</h2>
+    <h2>Comentários (<span id="total-comments"><?= $data['total_comments']?></span>)</h2>
 
     <form id="comment-form" class="mb-5" method="post">
       <input type="hidden" name="film_id" id="film_id" value="<?=$data['id']?>">
@@ -109,6 +109,12 @@
 
         $('input[name="name"]').val("");
         $('textarea[name="comment"]').val("");
+
+        let total_comments = $('#total-comments').text();
+        total_comments = parseInt(total_comments) + 1
+
+        $('#total-comments').text(total_comments);
+        
       })
       .fail(function() {
         console.log("Erro ao criar comentário");
