@@ -37,7 +37,7 @@
               <?php foreach ($author['comments'] as $index => $comment) { ?>
               <tr>
                 <td><a
-                    href="/film/<?=$comment['film_id']?>"><?= $comment['film_name']?></a>
+                    href="/films/<?=$comment['film_id']?>"><?= $comment['film_name']?></a>
                 </td>
                 <td><?= $comment['date']?></td>
                 <td><?= $comment['comment']?>

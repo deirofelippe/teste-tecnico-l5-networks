@@ -125,7 +125,8 @@ $init_get_authors_comments = function (string $uri) use ($pdo, $method) {
 
 $routes = [
     '/' => $init_find_all_films,
-    '/film/{id}' => $init_find_film_by_id,
+    '/films' => $init_find_all_films,
+    '/films/{id}' => $init_find_film_by_id,
     '/logs' => $init_logs,
     '/comment' => $init_create_comment,
     '/authors/comments' => $init_get_authors_comments,
