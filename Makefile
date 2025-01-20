@@ -20,10 +20,10 @@ test-cov-ci:
 	@./vendor/bin/coverage-check ./clover.xml 80 --only-percentage
 
 exec:
-	@docker container exec -it backend bash
+	@docker container exec -it app bash
 
 exec-root:
-	@docker container exec -it -u root backend bash
+	@docker container exec -it -u root app bash
 
 ci-cd:
 	@gh extension exec act --job ci
@@ -31,3 +31,6 @@ ci-cd:
 cs-fix:
 	@php-cs-fixer fix --config .php-cs-fixer.dist.php src/
 	@php-cs-fixer fix --config .php-cs-fixer.dist.php tests/
+
+docker-test-cov:
+	@docker container exec -it app bash -c "make test-cov"
