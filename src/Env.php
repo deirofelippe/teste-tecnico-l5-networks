@@ -9,6 +9,7 @@ $env_vars = json_decode($env_vars, true);
 $env = getenv('ENV') ?? $env_vars['ENV'];
 
 define('ENV', $env);
+define('BACKEND_URL', $env_vars['BACKEND_URL']);
 
 if ($env === 'test') {
     define('DB_HOST', $env_vars['DB_HOST_TEST']);
