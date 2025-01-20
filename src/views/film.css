@@ -2,3 +2,11 @@
   padding: 0px 6px;
   margin-bottom: 4px;
 }
+
+.divisor {
+  height: 2px;
+  width: 80%;
+  border-radius: 4px;
+  margin: 36px 0px;
+  background-color: rgba(var(--bs-secondary-rgb), .3);
+}
