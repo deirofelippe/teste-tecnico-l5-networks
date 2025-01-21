@@ -1,3 +1,12 @@
+up:
+	@docker compose up -d --build
+
+down:
+	@docker compose down
+
+rm:
+	@ docker container rm -f $$(docker container ls -a -q)
+	
 server:
 	@php -S 0.0.0.0:3000 /home/php/app/src/index.php
 
