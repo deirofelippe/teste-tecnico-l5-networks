@@ -2,22 +2,26 @@
 
 class FindFilmByIdService
 {
-    private HttpClient $httpClient;
+    private HttpClient $http_client;
     private Logger $logger;
     private Cache $cache;
+    private CommentsRepository $comments_repository;
 
     public function __construct(
-        HttpClient $httpClient,
+        HttpClient $http_client,
         Logger $logger,
-        Cache $cache
+        Cache $cache,
+        CommentsRepository $comments_repository
     ) {
-        $this->httpClient = $httpClient;
+        $this->http_client = $http_client;
         $this->logger = $logger;
         $this->cache = $cache;
+        $this->comments_repository = $comments_repository;
     }
 
     public function execute(string $id): array
     {
+        $this->logger->register('INFO', 'API', 'Executando FindFilmByIdService GET /films/{id}');
         $this->logger->register('DEBUG', 'API', "Dados do request: \n\n" . json_encode(['id' => $id]));
 
         $film = [];
@@ -27,7 +31,7 @@ class FindFilmByIdService
         $no_cache = count($film) < 1;
         if ($no_cache) {
             $url = "https://swapi.py4e.com/api/films/$id/?format=json";
-            $film = $this->httpClient->get($url);
+            $film = $this->http_client->get($url);
 
             $this->cache->set($cache_name, $film);
         }
@@ -57,10 +61,12 @@ class FindFilmByIdService
         $this->logger->register('INFO', 'API', 'Buscando os personagens do filme...');
 
         $characters = $this->get_characters($film['characters']);
+        $comments = $this->get_film_comments($id);
 
         $result['characters'] = $characters;
+        $result = array_merge($result, $comments);
 
-        $this->logger->register('INFO', 'API', 'Finalizando requisição...');
+        $this->logger->register('INFO', 'API', 'Finalizando GetAuthorsCommentsService...');
         $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($result));
 
         return $result;
@@ -85,7 +91,7 @@ class FindFilmByIdService
             $character = $this->cache->get($cache_name);
             $no_cache = count($character) < 1;
             if ($no_cache) {
-                $character = $this->httpClient->get($url);
+                $character = $this->http_client->get($url);
 
                 $this->cache->set($cache_name, $character);
             }
@@ -99,5 +105,28 @@ class FindFilmByIdService
         }
 
         return $characters;
+    }
+
+    private function get_film_comments(int $film_id): array
+    {
+        $comments = $this->comments_repository->get_comments_by_film_id($film_id);
+
+        if (count($comments) < 1) {
+            return [
+                'total_comments' => 0,
+                'comments' => [],
+            ];
+        }
+
+        $updated_comments = array_map(function ($comment) {
+            $date = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $comment['date'])->format('d/m/Y H:i');
+            $comment['date'] = $date;
+            return $comment;
+        }, $comments);
+
+        return [
+            'total_comments' => count($updated_comments),
+            'comments' => $updated_comments,
+        ];
     }
 }

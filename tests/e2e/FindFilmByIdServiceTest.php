@@ -10,14 +10,15 @@ final class FindFilmByIdServiceTest extends TestCase
     {
         $pdo = DatabaseSingleton::getInstance();
         $logger = new Logger(new LogsRepository($pdo));
-        $httpClient = new HttpClient($logger);
+        $http_client = new HttpClient($logger);
         $cache = new Cache($logger);
+        $comments_repository = new CommentsRepository($pdo, $logger);
 
-        $service = new FindFilmByIdService($httpClient, $logger, $cache);
+        $service = new FindFilmByIdService($http_client, $logger, $cache, $comments_repository);
 
         $id = '1';
         $film = $service->execute($id);
 
-        $this->assertSame(9, count($film));
+        $this->assertSame(11, count($film));
     }
 }

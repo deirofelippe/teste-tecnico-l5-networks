@@ -50,15 +50,32 @@ final class FindFilmByIdServiceTest extends TestCase
         $mock_http_client->shouldReceive('get')->once()->andReturn($mock_response_character1);
         $mock_http_client->shouldReceive('get')->once()->andReturn($mock_response_character2);
 
+        $mock_comments_repository = \Mockery::mock(CommentsRepository::class);
+        $mock_film_comments = [
+            [
+                'comment_id' => 3,
+                'comment' => 'Comentários teste',
+                'date' => '2025-01-19 21:44:10',
+                'author' => 'Autor teste',
+            ], [
+                'comment_id' => 2,
+                'comment' => 'Comentários teste',
+                'date' => '2025-01-19 21:44:09',
+                'author' => 'Autor teste',
+            ],
+        ];
+
+        $mock_comments_repository->shouldReceive('get_comments_by_film_id')->once()->andReturn($mock_film_comments);
+
         $mock_logger = \Mockery::mock(Logger::class);
         $mock_logger->shouldReceive('register');
 
-        $service = new FindFilmByIdService($mock_http_client, $mock_logger, $mock_cache);
+        $service = new FindFilmByIdService($mock_http_client, $mock_logger, $mock_cache, $mock_comments_repository);
 
         $film_id = '1';
         $film = $service->execute($film_id);
 
-        $this->assertSame(9, count($film));
+        $this->assertSame(11, count($film));
 
         $this->assertSame(2, count($film['characters']));
         $this->assertSame(2, count($film['characters'][0]));
@@ -68,5 +85,9 @@ final class FindFilmByIdServiceTest extends TestCase
 
         $this->assertSame('10/07/1998', $film['release_date']);
         $this->assertSame('27 anos, 331 meses e 9865 dias', $film['film_age']);
+
+        $this->assertSame(2, $film['total_comments']);
+        $this->assertSame('19/01/2025 21:44', $film['comments'][0]['date']);
+        $this->assertSame('19/01/2025 21:44', $film['comments'][1]['date']);
     }
 }

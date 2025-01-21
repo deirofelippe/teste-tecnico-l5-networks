@@ -1,7 +1,7 @@
 {
   "name": "Existing Docker Compose (Extend)",
   "dockerComposeFile": ["../docker-compose.yaml", "docker-compose.yml"],
-  "service": "backend",
+  "service": "app",
   "workspaceFolder": "/home/php/app",
   "customizations": {
     "vscode": {

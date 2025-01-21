@@ -14,8 +14,7 @@ class Cache
     public function get(string $name): array
     {
         $execute = function () use ($name): array {
-            $file = __DIR__ . "/../cache/$name.json";
-
+            $file = __DIR__ . "/../../cache/$name.json";
 
             $not_exists = !file_exists($file);
             if ($not_exists) {
@@ -28,7 +27,6 @@ class Cache
             $this->logger->register('DEBUG', 'CACHE', 'Busca feita');
             $this->logger->register('DEBUG', 'CACHE', "Dados: \n\n$data");
             $data = json_decode($data, true);
-
 
             return $data;
         };
@@ -53,7 +51,7 @@ class Cache
             $data = json_encode($data);
             $this->logger->register('DEBUG', 'CACHE', "Dados: \n\n $data");
 
-            $file = __DIR__ . "/../cache/$name.json";
+            $file = __DIR__ . "/../../cache/$name.json";
             file_put_contents($file, $data);
         };
 

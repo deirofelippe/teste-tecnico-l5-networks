@@ -81,7 +81,7 @@ class LogsRepository
             return $execute();
         } catch (\Exception $e) {
             $this->create_log(new Log('ERROR', 'DB', 'Erro no banco de dados'));
-            $this->create_log(new Log('ERROR', 'DB', "Input: \n\nName: $name"));
+            $this->create_log(new Log('ERROR', 'DB', "Input: \n\nLimit: $name\nOffset: $offset"));
             $this->create_log(new Log('ERROR', 'DB', "Message: \n\n" . $e->getMessage()));
             $this->create_log(new Log('ERROR', 'DB', "Trace: \n\n" . json_encode($e->getTrace())));
 

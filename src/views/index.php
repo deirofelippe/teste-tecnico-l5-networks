@@ -7,6 +7,7 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="/index.css" type="text/css">
         <link rel="stylesheet" href="<?="/$page_name.css"?>" type="text/css">
+        <script async src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
         <title>Catalogo Star Wars</title>
     </head>
@@ -17,6 +18,7 @@
                 <a href="/" class="fw-bold fs-4 link-body-emphasis text-decoration-none">CATALOGO</a>
                 <nav>
                     <a href="/" class="me-3 link-body-emphasis text-decoration-none">Home</a>
+                    <a href="/authors/comments" class="me-3 link-body-emphasis text-decoration-none">Autores</a>
                     <a href="/logs" class="me-3 link-body-emphasis text-decoration-none">Logs</a>
                 </nav>
             </div>

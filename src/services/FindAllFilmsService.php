@@ -2,22 +2,23 @@
 
 class FindAllFilmsService
 {
-    private HttpClient $httpClient;
+    private HttpClient $http_client;
     private Logger $logger;
     private Cache $cache;
 
     public function __construct(
-        HttpClient $httpClient,
+        HttpClient $http_client,
         Logger $logger,
         Cache $cache
     ) {
-        $this->httpClient = $httpClient;
+        $this->http_client = $http_client;
         $this->logger = $logger;
         $this->cache = $cache;
     }
 
     public function execute(): array
     {
+        $this->logger->register('INFO', 'API', 'Executando FindAllFilmsService GET /films');
         $this->logger->register('DEBUG', 'API', "Dados do request: \n\n" . json_encode([]));
 
         $films = [];
@@ -27,7 +28,7 @@ class FindAllFilmsService
         $no_cache = count($films) < 1;
         if ($no_cache) {
             $url = 'https://swapi.py4e.com/api/films/?format=json';
-            $films = $this->httpClient->get($url);
+            $films = $this->http_client->get($url);
 
             $this->cache->set($cache_name, $films);
         }
@@ -62,7 +63,7 @@ class FindAllFilmsService
         $this->logger->register('INFO', 'API', 'Ordenando os filmes...');
         uasort($films, $sort);
 
-        $this->logger->register('INFO', 'API', 'Finalizando requisição...');
+        $this->logger->register('INFO', 'API', 'Finalizando FindAllFilmsService...');
         $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($films));
 
         return $films;
