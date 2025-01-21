@@ -18,6 +18,7 @@ class FindAllFilmsService
 
     public function execute(): array
     {
+        $this->logger->register('INFO', 'API', 'Executando FindAllFilmsService GET /films');
         $this->logger->register('DEBUG', 'API', "Dados do request: \n\n" . json_encode([]));
 
         $films = [];
@@ -62,7 +63,7 @@ class FindAllFilmsService
         $this->logger->register('INFO', 'API', 'Ordenando os filmes...');
         uasort($films, $sort);
 
-        $this->logger->register('INFO', 'API', 'Finalizando requisição...');
+        $this->logger->register('INFO', 'API', 'Finalizando FindAllFilmsService...');
         $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($films));
 
         return $films;

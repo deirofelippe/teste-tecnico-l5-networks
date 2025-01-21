@@ -21,6 +21,7 @@ class FindFilmByIdService
 
     public function execute(string $id): array
     {
+        $this->logger->register('INFO', 'API', 'Executando FindFilmByIdService GET /films/{id}');
         $this->logger->register('DEBUG', 'API', "Dados do request: \n\n" . json_encode(['id' => $id]));
 
         $film = [];
@@ -65,7 +66,7 @@ class FindFilmByIdService
         $result['characters'] = $characters;
         $result = array_merge($result, $comments);
 
-        $this->logger->register('INFO', 'API', 'Finalizando requisição...');
+        $this->logger->register('INFO', 'API', 'Finalizando GetAuthorsCommentsService...');
         $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($result));
 
         return $result;

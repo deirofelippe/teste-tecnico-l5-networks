@@ -15,6 +15,9 @@ class ShowLogsService
 
     public function execute(int $limit, int $offset): array
     {
+        $this->logger->register('INFO', 'API', 'Executando ShowLogsService GET /logs');
+        $this->logger->register('DEBUG', 'API', "Dados do request: \n\n" . json_encode(['limit' => $limit, 'offset' => $offset]));
+
         $logs_repository = $this->logs_repository;
 
         $total_logs = $logs_repository->get_total_logs();
@@ -53,6 +56,9 @@ class ShowLogsService
             'next' => $pagination_info['next'],
             'previous' => $pagination_info['previous'],
         ];
+
+        $this->logger->register('INFO', 'API', 'Finalizando ShowLogsService...');
+        $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($response));
 
         return $response;
     }
