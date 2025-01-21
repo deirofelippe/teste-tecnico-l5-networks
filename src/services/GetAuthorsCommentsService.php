@@ -2,42 +2,25 @@
 
 class GetAuthorsCommentsService
 {
-    private PDO $pdo;
+    private AuthorsRepository $authors_repository;
+    private Logger $logger;
 
     public function __construct(
-        PDO $pdo
+        AuthorsRepository $authors_repository,
+        Logger $logger
     ) {
-        $this->pdo = $pdo;
+        $this->authors_repository = $authors_repository;
+        $this->logger = $logger;
     }
 
     public function execute(): array
     {
-        $pdo = $this->pdo;
+        $this->logger->register('INFO', 'API', 'Executando GetAuthorsCommentsService GET /authors/comments');
+        $this->logger->register('DEBUG', 'API', "Dados do request: \n\n" . json_encode([]));
 
-        $query = <<<EOL
-            SELECT a.name AS author_name, f.name AS film_name, c.comment AS comment, c.created_at AS date, a.id AS author_id, f.id AS film_id
-            FROM Comment AS c
-            JOIN Author AS a ON a.id = c.author_id 
-            JOIN Film AS f ON f.id = c.film_id
-            ORDER BY a.name;
-        EOL;
+        $comments_details = $this->authors_repository->get_details_of_authors_comments();
 
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
-        $comments_details = $stmt->fetchAll();
-
-        $query = <<<EOL
-            SELECT a.name AS author_name, a.id AS author_id, COUNT(a.id) AS total_comments
-            FROM Comment AS c
-            JOIN Author AS a ON a.id = c.author_id 
-            JOIN Film AS f ON f.id = c.film_id
-            GROUP BY a.id
-            ORDER BY a.name;
-        EOL;
-
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
-        $authors = $stmt->fetchAll();
+        $authors = $this->authors_repository->get_authors_and_total_comments();
 
         $authors_with_comments = array_map(function ($author) use ($comments_details) {
             $comments = [];
@@ -67,6 +50,9 @@ class GetAuthorsCommentsService
 
             return $updated_author;
         }, $authors);
+
+        $this->logger->register('INFO', 'API', 'Finalizando GetAuthorsCommentsService...');
+        $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($authors_with_comments));
 
         return $authors_with_comments;
     }
