@@ -15,7 +15,7 @@ class Cache
     {
         $execute = function () use ($name): array {
             $file = __DIR__ . "/../../cache/$name.json";
-            
+
             $not_exists = !file_exists($file);
             if ($not_exists) {
                 return [];
