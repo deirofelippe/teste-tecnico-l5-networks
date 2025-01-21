@@ -20,18 +20,20 @@ Deve ser feita uma integração com a API do Star Wars em PHP 7.4 sem frameworks
 - PHP CS Fixer para forçar o padrão de estilo de código;
 - Arquitetura em MVC e uso de outras camadas para organizar o código.
 
+> A organização das tarefas, o backlog está no GitHub Projects: [https://github.com/users/deirofelippe/projects/2](https://github.com/users/deirofelippe/projects/2)
+
 ## Vídeo da aplicação sendo usada
 
 [![Execução da aplicação no YouTube](https://img.youtube.com/vi/SXLEcUbvSPg/0.jpg)](https://youtu.be/SXLEcUbvSPg)
 
 ## Sumário
 
-- [Melhorias futuras](#melhorias-futuras)
 - [Arquitetura MVC](#arquitetura-mvc)
 - [Banco de dados](#banco-de-dados)
 - [Como executar](#como-executar)
     - [Docker](#docker)
     - [Sem o Docker](#sem-o-docker)
+- [Melhorias futuras](#melhorias-futuras)
 - [Rotas](#rotas)
 - [Acessando o PhpMyAdmin](#acessando-o-phpmyadmin)
 - [Executando CI/CD localmente](#executando-cicd-localmente)
@@ -39,32 +41,17 @@ Deve ser feita uma integração com a API do Star Wars em PHP 7.4 sem frameworks
 - [Como limpar o cache?](#como-limpar-o-cache)
 - [Sistema sendo usado (Screenshots)](#sistema-sendo-usado-screenshots)
 
-## Melhorias futuras
-
-- Melhorar o código:
-    - Usar mais a camada model;
-    - Fazer logs no GetAuthorsCommets e CreateComment;
-    - Organizar o Index;
-    - Tratar erro 500;
-    - Melhorar o response dos controllers e retornar status code melhor.
-- Testes com Cypress para garantir que o frontend e backend estão funcionando corretamente.
-- Tempo de expiração no cache.
-- Usar lib de análise estática de código (Psalm ou PHPStan) para ter mais qualidade no código.
-- Deixar mais dinâmico as rotas, a query string, o path parameter.
-- Organizar o a lógica que irá chamar o controller baseado na rota.
-- Fazer mais testes unitários para a lógica do service e de outras camadas.
-
 ## Arquitetura MVC
 
 ![](./docs/arquitetura.png)
 
 MVC e foi adicionada mais camadas para tornar os testes de integração mais fáceis.
 
-- `Index`: camada que inicia a aplicação, faz tratamento das rotas, monta as dependencias do controller e envia para o controller que é responsável pela rota.
+- `Index`: camada que inicia a aplicação, faz tratamento das rotas, monta as dependências do controller e envia para o controller que é responsável pela rota.
 - `Controller`: camada que recebe a requisição e envia para o service ou finaliza a requisição com algum status code.
 - `View`: onde estão as páginas e css.
-- `Service`: camada que osquestra as chamadas, executa também a lógica geral.
-- `Model`: onde contém as entidades usadas e que contém a lógica.
+- `Service`: camada que orquestra as chamadas e executa a lógica geral.
+- `Model`: onde contém as entidades usadas e que contém a lógica relacionada a entidade.
 - `Repository`: camada que faz comunicação externa, seja ao banco de dados, api externa (HTTP Client), disco (Cache), memória e etc.
 - `Database`: MySQL, onde armazena os dados.
 
@@ -81,11 +68,26 @@ MVC e foi adicionada mais camadas para tornar os testes de integração mais fá
 
 ### Sem o Docker
 
-- Instale as dependencias caso deseja executar os testes: `composer install`.
+- Instale as dependências caso deseja executar os testes: `composer install`.
 - Crie o banco de dados usando o arquivo `./database.sql`.
 - Configure o `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USER`, `DB_PASSWORD` do banco de dados no arquivo `./env.json` que será usado na aplicação.
 - Execute a aplicação: `php -S 0.0.0.0:3000 ./src/index.php` ou `php -S localhost:3000 ./src/index.php`.
 - Acesse a aplicação pela url que foi configurada.
+
+## Melhorias futuras
+
+- Melhorar o código:
+    - Usar mais a camada model;
+    - Fazer logs no GetAuthorsCommets e CreateComment;
+    - Organizar o Index;
+    - Tratar erro 500;
+    - Melhorar o response dos controllers e retornar status code melhor.
+- Testes com Cypress para garantir que o frontend e backend estão funcionando corretamente.
+- Tempo de expiração no cache.
+- Usar lib de análise estática de código (Psalm ou PHPStan) para ter mais qualidade no código.
+- Deixar mais dinâmico as rotas, a query string, o path parameter.
+- Organizar o a lógica que irá chamar o controller baseado na rota.
+- Fazer mais testes unitários para a lógica do service e de outras camadas.
 
 ## Rotas
 
@@ -128,4 +130,3 @@ No diretório `cache/` pode ser removido todos os arquivos que termina com `.jso
 ![](./docs/page-2.png)
 ![](./docs/page-3.png)
 ![](./docs/page-4.png)
-
