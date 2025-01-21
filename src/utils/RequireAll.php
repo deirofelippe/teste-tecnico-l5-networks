@@ -22,6 +22,8 @@ require_once __DIR__ . '/../repositories/HttpClient.php';
 
 require_once __DIR__ . '/../repositories/LogsRepository.php';
 require_once __DIR__ . '/../repositories/CommentsRepository.php';
+require_once __DIR__ . '/../repositories/AuthorsRepository.php';
+require_once __DIR__ . '/../repositories/FilmsRepository.php';
 
 require_once __DIR__ . '/../internals/View.php';
 
