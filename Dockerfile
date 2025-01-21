@@ -21,4 +21,4 @@ RUN composer install
 
 COPY --chown=php:php ./ ./
 
-CMD make server
+CMD [ "make", "server" ]
