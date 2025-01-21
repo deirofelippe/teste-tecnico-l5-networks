@@ -98,7 +98,7 @@ $init_logs = function (string $uri) use ($logs_repository, $logger, $query_strin
     $controller->execute($limit, $offset);
 };
 
-$init_create_comment = function (string $uri) use ($pdo, $method) {
+$init_create_comment = function (string $uri) use ($pdo, $logger, $method) {
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
 
@@ -106,18 +106,28 @@ $init_create_comment = function (string $uri) use ($pdo, $method) {
         return;
     }
 
-    $service = new CreateCommentService($pdo);
+    $comments_repository = new CommentsRepository($pdo, $logger);
+    $films_repository = new FilmsRepository($pdo, $logger);
+    $authors_repository = new AuthorsRepository($pdo, $logger);
+
+    $service = new CreateCommentService(
+        $comments_repository,
+        $films_repository,
+        $authors_repository,
+        $logger
+    );
     $controller = new CreateCommentController($service);
 
     $controller->execute($data);
 };
 
-$init_get_authors_comments = function (string $uri) use ($pdo, $method) {
+$init_get_authors_comments = function (string $uri) use ($pdo, $logger, $method) {
     if ($method != 'GET') {
         return;
     }
 
-    $service = new GetAuthorsCommentsService($pdo);
+    $authors_repository = new AuthorsRepository($pdo, $logger);
+    $service = new GetAuthorsCommentsService($authors_repository, $logger);
     $controller = new GetAuthorsCommentsController($service);
 
     $controller->execute();
