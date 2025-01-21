@@ -9,7 +9,10 @@ final class GetAuthorsCommentsServiceTest extends TestCase
     public function test_deve_buscar_comentarios_de_autores(): void
     {
         $pdo = DatabaseSingleton::getInstance();
-        $service = new GetAuthorsCommentsService($pdo);
+        $logger = new Logger(new LogsRepository($pdo));
+        $authors_repository = new AuthorsRepository($pdo, $logger);
+
+        $service = new GetAuthorsCommentsService($authors_repository, $logger);
 
         $authors_comments = $service->execute();
 
