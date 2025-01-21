@@ -10,7 +10,9 @@ final class CreateCommentServiceTest extends TestCase
     {
         $pdo = DatabaseSingleton::getInstance();
         $logger = new Logger(new LogsRepository($pdo));
-        $cache = new Cache($logger);
+        $comments_repository = new CommentsRepository($pdo, $logger);
+        $films_repository = new FilmsRepository($pdo, $logger);
+        $authors_repository = new AuthorsRepository($pdo, $logger);
 
         $data = [
             'film_id' => '1',
@@ -19,10 +21,15 @@ final class CreateCommentServiceTest extends TestCase
             'author' => 'Autor teste 2',
         ];
 
-        $service = new CreateCommentService($pdo);
+        $service = new CreateCommentService(
+            $comments_repository,
+            $films_repository,
+            $authors_repository,
+            $logger
+        );
 
-        $service->execute($data);
+        $result = $service->execute($data);
 
-        $this->assertSame(9, 9);
+        $this->assertSame(4, count($result));
     }
 }
