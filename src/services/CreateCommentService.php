@@ -2,66 +2,78 @@
 
 class CreateCommentService
 {
-    private PDO $pdo;
+    private CommentsRepository $comments_repository;
+    private FilmsRepository $films_repository;
+    private AuthorsRepository $authors_repository;
+    private Logger $logger;
 
     public function __construct(
-        PDO $pdo
+        CommentsRepository $comments_repository,
+        FilmsRepository $films_repository,
+        AuthorsRepository $authors_repository,
+        Logger $logger
     ) {
-        $this->pdo = $pdo;
+        $this->comments_repository = $comments_repository;
+        $this->films_repository = $films_repository;
+        $this->authors_repository = $authors_repository;
+        $this->logger = $logger;
     }
 
     public function execute(array $data)
     {
+        $this->logger->register('INFO', 'API', 'Executando CreateCommentService POST /comments');
+        $this->logger->register('DEBUG', 'API', "Dados do request: \n\n" . json_encode($data));
+
         $film_id = $data['film_id'];
         $film_name = $data['film_name'];
-        $author = $data['author'];
+        $author_name = $data['author'];
         $comment = $data['comment'];
 
-        $pdo = $this->pdo;
+        $film_found = $this->films_repository->find_film_by_id($film_id);
 
-        $stmt = $pdo->prepare('SELECT id FROM Film WHERE id = :id');
-        $stmt->bindParam(':id', $film_id);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        if (count($film_found) < 1) {
+            $new_film = [
+                'id' => $film_id,
+                'name' => $film_name,
+            ];
 
-        if (count($result) < 1) {
-            $stmt = $pdo->prepare('INSERT INTO Film (id, name) VALUES (:id, :name)');
-            $stmt->bindParam(':id', $film_id);
-            $stmt->bindParam(':name', $film_name);
-            $stmt->execute();
+            $this->films_repository->create_film($new_film);
         }
 
-        $stmt = $this->pdo->prepare('SELECT id FROM Author WHERE name = :name');
-        $stmt->bindParam(':name', $author);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        $author_found = $this->authors_repository->find_author_by_name($author_name);
 
         $author_id = 0;
-        if (count($result) < 1) {
+        if (count($author_found) < 1) {
             $author_id = time();
 
-            $stmt = $pdo->prepare('INSERT INTO Author (id, name) VALUES (:id, :name)');
-            $stmt->bindParam(':id', $author_id);
-            $stmt->bindParam(':name', $author);
-            $stmt->execute();
+            $new_author = [
+                'id' => $author_id,
+                'name' => $author_name,
+            ];
+            $this->authors_repository->create_author($new_author);
         } else {
-            $author_id = $result[0]['id'];
+            $author_id = $author_found[0]['id'];
         }
 
-        $created_at = date('Y-m-d H:i:s');
-
-        $stmt = $pdo->prepare('INSERT INTO Comment (film_id, author_id, comment, created_at) VALUES (:film_id, :author_id, :comment, :created_at)');
-        $stmt->bindParam(':film_id', $film_id);
-        $stmt->bindParam(':author_id', $author_id);
-        $stmt->bindParam(':comment', $comment);
-        $stmt->bindParam(':created_at', $created_at);
-        $stmt->execute();
-
-        return [
-            'author' => $author,
+        $new_comment = [
+            'film_id' => $film_id,
             'author_id' => $author_id,
             'comment' => $comment,
-            'date' => DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $created_at)->format('d/m/Y H:i'),
+            'created_at' => date('Y-m-d H:i:s'),
         ];
+
+        $this->comments_repository->create_comment($new_comment);
+
+        $created_comment = [
+            'author' => $author_name,
+            'author_id' => $author_id,
+            'comment' => $comment,
+            'date' => DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $new_comment['created_at'])->format('d/m/Y H:i'),
+        ];
+
+        $this->logger->register('INFO', 'API', 'Finalizando CreateCommentService...');
+        $this->logger->register('DEBUG', 'API', "Dados do response: \n\n" . json_encode($created_comment));
+
+        return $created_comment;
     }
 }
